@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime;
@@ -67,9 +68,32 @@ namespace Data_Access_Tier
         static public DataTable GetAllTasks()
         {
             DataTable tasks = new DataTable();
+            tasks.Columns.Add("Done", typeof(bool));
+            tasks.Columns.Add("Name", typeof(string));
+            tasks.Columns.Add("Description", typeof(string));
+            tasks.Columns.Add("End Date", typeof(DateTime));
+            tasks.Columns.Add("Created At", typeof(DateTime));
+
 
             string query = "select * from tasks;";
-            
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+            try
+            {
+                clsSettings.connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) {
+                    tasks.Rows.Add(reader["done"] , reader["name"] , reader["description"] , reader["end_date"] , reader["created_at"]);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
 
 
             return tasks;

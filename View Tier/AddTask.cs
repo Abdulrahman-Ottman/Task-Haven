@@ -31,6 +31,7 @@ namespace View_Tier
                 MessageBox.Show("Task Added Successfully");
                 tbTaskName.Clear();
                 tbTaskDescription.Clear();
+                MainScreen main = new MainScreen();
             }
             else
             {
