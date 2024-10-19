@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnAddTask = new System.Windows.Forms.Button();
             this.TaskList = new System.Windows.Forms.DataGridView();
+            this.TasksMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.TaskList)).BeginInit();
+            this.TasksMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddTask
@@ -52,6 +57,7 @@
             this.TaskList.AllowUserToOrderColumns = true;
             this.TaskList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.TaskList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TaskList.ContextMenuStrip = this.TasksMenuStrip;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
@@ -65,6 +71,28 @@
             this.TaskList.Size = new System.Drawing.Size(504, 319);
             this.TaskList.TabIndex = 3;
             this.TaskList.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.TaskList_CellBeginEdit);
+            this.TaskList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TaskList_MouseDown);
+            // 
+            // TasksMenuStrip
+            // 
+            this.TasksMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.TasksMenuStrip.Name = "TasksMenuStrip";
+            this.TasksMenuStrip.Size = new System.Drawing.Size(108, 48);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // MainScreen
             // 
@@ -80,6 +108,7 @@
             this.Text = "Task Manager";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TaskList)).EndInit();
+            this.TasksMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -87,6 +116,9 @@
         #endregion
         private System.Windows.Forms.Button btnAddTask;
         private System.Windows.Forms.DataGridView TaskList;
+        private System.Windows.Forms.ContextMenuStrip TasksMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }
 

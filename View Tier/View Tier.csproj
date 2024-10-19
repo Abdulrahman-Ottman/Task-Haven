@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddTask.cs">
+    <Compile Include="AddEditTask.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddTask.Designer.cs">
-      <DependentUpon>AddTask.cs</DependentUpon>
+    <Compile Include="AddEditTask.Designer.cs">
+      <DependentUpon>AddEditTask.cs</DependentUpon>
     </Compile>
     <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
@@ -60,8 +60,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddTask.resx">
-      <DependentUpon>AddTask.cs</DependentUpon>
+    <EmbeddedResource Include="AddEditTask.resx">
+      <DependentUpon>AddEditTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreen.resx">
       <DependentUpon>MainScreen.cs</DependentUpon>

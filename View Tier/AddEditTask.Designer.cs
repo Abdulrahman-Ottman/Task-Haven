@@ -1,6 +1,6 @@
 ﻿namespace View_Tier
 {
-    partial class AddTask
+    partial class AddEditTask
     {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dtpEnd_date = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnSubmitAddTask = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbTaskName
@@ -98,23 +99,34 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "End date :";
             // 
-            // btnSubmitAddTask
+            // btnSave
             // 
-            this.btnSubmitAddTask.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.btnSubmitAddTask.Location = new System.Drawing.Point(100, 339);
-            this.btnSubmitAddTask.Name = "btnSubmitAddTask";
-            this.btnSubmitAddTask.Size = new System.Drawing.Size(100, 23);
-            this.btnSubmitAddTask.TabIndex = 7;
-            this.btnSubmitAddTask.Text = "Add Task";
-            this.btnSubmitAddTask.UseVisualStyleBackColor = true;
-            this.btnSubmitAddTask.Click += new System.EventHandler(this.btnSubmitAddTask_Click);
+            this.btnSave.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.btnSave.Location = new System.Drawing.Point(145, 340);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(90, 23);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // AddTask
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(41, 340);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(90, 23);
+            this.btnCancel.TabIndex = 8;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // AddEditTask
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 393);
-            this.Controls.Add(this.btnSubmitAddTask);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dtpEnd_date);
             this.Controls.Add(this.label2);
@@ -122,10 +134,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbAddTask);
             this.Controls.Add(this.tbTaskName);
-            this.Name = "AddTask";
+            this.Name = "AddEditTask";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AddTask";
-            this.Load += new System.EventHandler(this.AddTask_Load);
+            this.Load += new System.EventHandler(this.AddEditTask_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dtpEnd_date;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnSubmitAddTask;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -21,5 +21,20 @@ namespace Business_Tier
         {
             return clsTask.GetAllTasks();
         }
+
+        public static Dictionary<string , string> GetTaskDataById(int id)
+        {
+            return clsTask.GetTaskDataById(id);
+        }
+
+        public static bool UpdateTask(int id , string name, string description, DateTime end_date, DateTime created_at)
+        {
+            clsTask task = clsTask.FindTaskByID(id);
+            task.Name = name;
+            task.Description = description;
+            task.EndDate = end_date;
+            task.CreatedAt = created_at;
+            return clsTask.UpdateTask(task);
+        }
     }
 }
