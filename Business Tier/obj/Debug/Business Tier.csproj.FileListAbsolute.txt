@@ -1,0 +1,9 @@
+C:\Projects\Task Haven\Business Tier\obj\Debug\Business Tier.csproj.AssemblyReference.cache
+C:\Projects\Task Haven\Business Tier\obj\Debug\Business Tier.csproj.CoreCompileInputs.cache
+C:\Projects\Task Haven\Business Tier\bin\Debug\Business Tier.dll
+C:\Projects\Task Haven\Business Tier\bin\Debug\Business Tier.pdb
+C:\Projects\Task Haven\Business Tier\obj\Debug\Business Tier.dll
+C:\Projects\Task Haven\Business Tier\obj\Debug\Business Tier.pdb
+C:\Projects\Task Haven\Business Tier\bin\Debug\Data Access Tier.dll
+C:\Projects\Task Haven\Business Tier\bin\Debug\Data Access Tier.pdb
+C:\Projects\Task Haven\Business Tier\obj\Debug\Business.29F722DD.Up2Date

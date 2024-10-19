@@ -1,0 +1,6 @@
+C:\Projects\Task Haven\Data Access Tier\bin\Debug\Data Access Tier.dll
+C:\Projects\Task Haven\Data Access Tier\bin\Debug\Data Access Tier.pdb
+C:\Projects\Task Haven\Data Access Tier\obj\Debug\Data Access Tier.csproj.AssemblyReference.cache
+C:\Projects\Task Haven\Data Access Tier\obj\Debug\Data Access Tier.csproj.CoreCompileInputs.cache
+C:\Projects\Task Haven\Data Access Tier\obj\Debug\Data Access Tier.dll
+C:\Projects\Task Haven\Data Access Tier\obj\Debug\Data Access Tier.pdb

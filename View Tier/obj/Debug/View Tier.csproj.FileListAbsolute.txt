@@ -1,0 +1,16 @@
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.csproj.AssemblyReference.cache
+C:\Projects\Task Haven\View Tier\obj\Debug\View_Tier.MainScreen.resources
+C:\Projects\Task Haven\View Tier\obj\Debug\View_Tier.Properties.Resources.resources
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.csproj.GenerateResource.cache
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.csproj.CoreCompileInputs.cache
+C:\Projects\Task Haven\View Tier\bin\Debug\View Tier.exe.config
+C:\Projects\Task Haven\View Tier\bin\Debug\View Tier.exe
+C:\Projects\Task Haven\View Tier\bin\Debug\View Tier.pdb
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.exe
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.pdb
+C:\Projects\Task Haven\View Tier\obj\Debug\View Tier.csproj.Up2Date
+C:\Projects\Task Haven\View Tier\bin\Debug\Business Tier.dll
+C:\Projects\Task Haven\View Tier\bin\Debug\Business Tier.pdb
+C:\Projects\Task Haven\View Tier\bin\Debug\Data Access Tier.dll
+C:\Projects\Task Haven\View Tier\bin\Debug\Data Access Tier.pdb
+C:\Projects\Task Haven\View Tier\obj\Debug\View_Tier.AddTask.resources
