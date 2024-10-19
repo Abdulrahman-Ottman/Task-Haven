@@ -15,7 +15,7 @@ namespace Data_Access_Tier
     {
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public DateTime EndDate { get; set; }
         public bool Done { get; set; }
@@ -31,11 +31,11 @@ namespace Data_Access_Tier
             bool added = false;
 
 
-            string query = @"INSERT INTO tasks (name, description, end_date, done, created_at)
-                             VALUES (@name, @description, @end_date, @done, @created_at)";
+            string query = @"INSERT INTO tasks (title, description, end_date, done, created_at)
+                             VALUES (@title, @description, @end_date, @done, @created_at)";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
 
-            command.Parameters.AddWithValue("@name", task.Name);
+            command.Parameters.AddWithValue("@title", task.Title);
             command.Parameters.AddWithValue("@description", task.Description);
             command.Parameters.AddWithValue("@end_date", task.EndDate);
             command.Parameters.AddWithValue("@done", task.Done);
@@ -71,7 +71,7 @@ namespace Data_Access_Tier
             DataTable tasks = new DataTable();
             tasks.Columns.Add("id", typeof(int));
             tasks.Columns.Add("Done", typeof(bool));
-            tasks.Columns.Add("Name", typeof(string));
+            tasks.Columns.Add("Title", typeof(string));
             tasks.Columns.Add("Description", typeof(string));
             tasks.Columns.Add("End Date", typeof(DateTime));
             tasks.Columns.Add("Created At", typeof(DateTime));
@@ -84,7 +84,7 @@ namespace Data_Access_Tier
                 clsSettings.connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
-                    tasks.Rows.Add(reader["id"] ,reader["done"] , reader["name"] , reader["description"] , reader["end_date"] , reader["created_at"]);
+                    tasks.Rows.Add(reader["id"] ,reader["done"] , reader["title"] , reader["description"] , reader["end_date"] , reader["created_at"]);
                 }
 
             }
@@ -114,7 +114,7 @@ namespace Data_Access_Tier
                 if (reader.Read())
                 {
                     taskData.Add("id" , reader["id"].ToString());
-                    taskData.Add("name" , reader["name"].ToString());
+                    taskData.Add("title" , reader["title"].ToString());
                     taskData.Add("description" , reader["description"].ToString());
                     taskData.Add("done" , reader["done"].ToString());
                     taskData.Add("end_date" , reader["end_date"].ToString());
@@ -145,7 +145,7 @@ namespace Data_Access_Tier
                 if (reader.Read())
                 {
                     task.Id = id;
-                    task.Name = reader["name"].ToString();
+                    task.Title = reader["title"].ToString();
                     task.Description = reader["description"].ToString();
                     task.EndDate = DateTime.Parse(reader["end_date"].ToString());
                     task.Done = (bool)(reader["done"]);
@@ -173,7 +173,7 @@ namespace Data_Access_Tier
 
 
             string query = @"UPDATE tasks
-                           SET [name] = @name
+                           SET [title] = @title
                               ,[description] =  @description
                               ,[end_date] = @end_date
                               ,[done] = @done
@@ -182,7 +182,7 @@ namespace Data_Access_Tier
 
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
 
-            command.Parameters.AddWithValue("@name", task.Name);
+            command.Parameters.AddWithValue("@title", task.Title);
             command.Parameters.AddWithValue("@description", task.Description);
             command.Parameters.AddWithValue("@end_date", task.EndDate);
             command.Parameters.AddWithValue("@done", task.Done);

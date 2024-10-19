@@ -35,7 +35,7 @@ namespace View_Tier
             TaskList.Columns[4].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format Created At        }
 
             TaskList.Columns["ID"].DefaultCellStyle.ForeColor = Color.Black;
-            TaskList.Columns["Name"].DefaultCellStyle.ForeColor = Color.Black;
+            TaskList.Columns["Title"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Description"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["End Date"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Created At"].DefaultCellStyle.ForeColor = Color.Black;

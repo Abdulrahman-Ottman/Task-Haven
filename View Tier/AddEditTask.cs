@@ -25,8 +25,8 @@ namespace View_Tier
             TaskId = id;
             InitializeComponent();
             Dictionary<string,string> taskData = TaskController.GetTaskDataById(id);
-            lbAddTask.Text = $"Edit Task: {taskData["name"]}";
-            tbTaskName.Text = $"{taskData["name"]}";
+            lbAddTask.Text = $"Edit Task: {taskData["title"]}";
+            tbTaskName.Text = $"{taskData["title"]}";
             tbTaskDescription.Text = $"{taskData["description"]}";
             dtpEnd_date.Value = DateTime.Parse(taskData["end_date"]);
             Mode = enMode.Update;

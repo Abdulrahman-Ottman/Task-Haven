@@ -8,10 +8,10 @@ namespace Business_Tier
 {
     public class TaskController
     {
-        static public bool AddTask(string name , string description , DateTime end_date , DateTime created_at )
+        static public bool AddTask(string title , string description , DateTime end_date , DateTime created_at )
         {
             clsTask task = new clsTask();
-            task.Name = name;
+            task.Title = title;
             task.Description = description; 
             task.EndDate = end_date;
             task.CreatedAt = created_at;
@@ -27,10 +27,10 @@ namespace Business_Tier
             return clsTask.GetTaskDataById(id);
         }
 
-        public static bool UpdateTask(int id , string name, string description, DateTime end_date, DateTime created_at)
+        public static bool UpdateTask(int id , string title, string description, DateTime end_date, DateTime created_at)
         {
             clsTask task = clsTask.FindTaskByID(id);
-            task.Name = name;
+            task.Title = title;
             task.Description = description;
             task.EndDate = end_date;
             task.CreatedAt = created_at;
