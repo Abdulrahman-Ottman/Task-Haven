@@ -34,6 +34,7 @@ namespace View_Tier
             TaskList.Columns[3].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format End Date
             TaskList.Columns[4].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format Created At        }
 
+            TaskList.Columns["ID"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Name"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Description"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["End Date"].DefaultCellStyle.ForeColor = Color.Black;
@@ -47,7 +48,7 @@ namespace View_Tier
         }
         private void btnAddTask_Click(object sender, EventArgs e)
         {
-            AddTask addTask = new AddTask();
+            AddEditTask addTask = new AddEditTask();
             addTask.ShowDialog();
             LoadTasks();
         }
@@ -58,6 +59,34 @@ namespace View_Tier
             {
                 // Cancel editing for all columns except "Done"
                 e.Cancel = true;
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+            AddEditTask EditScreen = new AddEditTask(id);
+            EditScreen.ShowDialog();
+            LoadTasks();
+        }
+
+        private void TaskList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Get the row index of the row that was clicked
+                var hitTestInfo = TaskList.HitTest(e.X, e.Y);
+
+                // Check if the click was on a row
+                if (hitTestInfo.RowIndex >= 0)
+                {
+                    // Select the clicked row
+                    TaskList.ClearSelection();
+                    TaskList.Rows[hitTestInfo.RowIndex].Selected = true;
+
+                    // Optionally, set the current cell if needed
+                    TaskList.CurrentCell = TaskList.Rows[hitTestInfo.RowIndex].Cells[0];
+                }
             }
         }
     }
