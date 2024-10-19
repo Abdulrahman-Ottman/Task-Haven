@@ -19,33 +19,22 @@ namespace View_Tier
             InitializeComponent();
         }
 
-        private void LoadTasks()
+         private void LoadTasks()
         {
 
-            //DataTable tasks = new DataTable();
+            DataTable tasks = TaskController.GetAllTasks();
 
             // Set up the DataGridView and bind the DataTable
-            //TaskList.DataSource = tasks;
-
-            DataGridViewCheckBoxColumn doneColumn = new DataGridViewCheckBoxColumn();
-            doneColumn.HeaderText = "Done";
-            doneColumn.Name = "Done";
-            doneColumn.Width = 50;
-            TaskList.Columns.Add(doneColumn);
-
-            TaskList.Columns.Add("Name", "Name");    
-            TaskList.Columns.Add("Description", "Description"); 
-            TaskList.Columns.Add("End Date", "End Date");    
-            TaskList.Columns.Add("Created At", "Created At");
+            TaskList.DataSource = tasks;
 
             TaskList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            TaskList.Rows.Add(false, "Finish project", "Complete the final report", DateTime.Now.AddDays(3), DateTime.Now);
             // Optional: Customize the columns further if needed
             TaskList.Columns[0].Width = 40;  // Set checkbox column width
             TaskList.Columns[3].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format End Date
             TaskList.Columns[4].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format Created At        }
 
+            TaskList.Columns["ID"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Name"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Description"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["End Date"].DefaultCellStyle.ForeColor = Color.Black;
@@ -57,10 +46,11 @@ namespace View_Tier
             LoadTasks();
 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAddTask_Click(object sender, EventArgs e)
         {
-            AddTask addTask = new AddTask();
+            AddEditTask addTask = new AddEditTask();
             addTask.ShowDialog();
+            LoadTasks();
         }
 
         private void TaskList_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -69,6 +59,34 @@ namespace View_Tier
             {
                 // Cancel editing for all columns except "Done"
                 e.Cancel = true;
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+            AddEditTask EditScreen = new AddEditTask(id);
+            EditScreen.ShowDialog();
+            LoadTasks();
+        }
+
+        private void TaskList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Get the row index of the row that was clicked
+                var hitTestInfo = TaskList.HitTest(e.X, e.Y);
+
+                // Check if the click was on a row
+                if (hitTestInfo.RowIndex >= 0)
+                {
+                    // Select the clicked row
+                    TaskList.ClearSelection();
+                    TaskList.Rows[hitTestInfo.RowIndex].Selected = true;
+
+                    // Optionally, set the current cell if needed
+                    TaskList.CurrentCell = TaskList.Rows[hitTestInfo.RowIndex].Cells[0];
+                }
             }
         }
     }

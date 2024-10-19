@@ -13,4 +13,4 @@ C:\Projects\Task Haven\View Tier\bin\Debug\Business Tier.dll
 C:\Projects\Task Haven\View Tier\bin\Debug\Business Tier.pdb
 C:\Projects\Task Haven\View Tier\bin\Debug\Data Access Tier.dll
 C:\Projects\Task Haven\View Tier\bin\Debug\Data Access Tier.pdb
-C:\Projects\Task Haven\View Tier\obj\Debug\View_Tier.AddTask.resources
+C:\Projects\Task Haven\View Tier\obj\Debug\View_Tier.AddEditTask.resources
