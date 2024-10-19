@@ -19,28 +19,16 @@ namespace View_Tier
             InitializeComponent();
         }
 
-        private void LoadTasks()
+         private void LoadTasks()
         {
 
-            //DataTable tasks = new DataTable();
+            DataTable tasks = TaskController.GetAllTasks();
 
             // Set up the DataGridView and bind the DataTable
-            //TaskList.DataSource = tasks;
-
-            DataGridViewCheckBoxColumn doneColumn = new DataGridViewCheckBoxColumn();
-            doneColumn.HeaderText = "Done";
-            doneColumn.Name = "Done";
-            doneColumn.Width = 50;
-            TaskList.Columns.Add(doneColumn);
-
-            TaskList.Columns.Add("Name", "Name");    
-            TaskList.Columns.Add("Description", "Description"); 
-            TaskList.Columns.Add("End Date", "End Date");    
-            TaskList.Columns.Add("Created At", "Created At");
+            TaskList.DataSource = tasks;
 
             TaskList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            TaskList.Rows.Add(false, "Finish project", "Complete the final report", DateTime.Now.AddDays(3), DateTime.Now);
             // Optional: Customize the columns further if needed
             TaskList.Columns[0].Width = 40;  // Set checkbox column width
             TaskList.Columns[3].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format End Date
@@ -57,10 +45,11 @@ namespace View_Tier
             LoadTasks();
 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAddTask_Click(object sender, EventArgs e)
         {
             AddTask addTask = new AddTask();
             addTask.ShowDialog();
+            LoadTasks();
         }
 
         private void TaskList_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
