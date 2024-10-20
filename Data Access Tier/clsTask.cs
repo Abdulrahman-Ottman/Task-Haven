@@ -21,6 +21,7 @@ namespace Data_Access_Tier
         public bool Done { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        //CRUD section
         static public bool AddTask(clsTask task)
         {
             if (task == null)
@@ -65,18 +66,112 @@ namespace Data_Access_Tier
             return added;
 
         }
+        static public bool DeleteTasks(string ids)
+        {
+            int rowsAffected = 0;
+            if(ids == null || ids == "")
+            {
+                return false;
+            }
 
+            string query = $"DELETE FROM tasks where id in ({ids})";
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+
+            try
+            {
+                clsSettings.connection.Open();
+
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+        static public bool UpdateTask(clsTask task) {
+            if (task == null)
+            {
+                return false;
+            }
+
+            bool updated = false;
+
+
+            string query = @"UPDATE tasks
+                           SET [title] = @title
+                              ,[description] =  @description
+                              ,[end_date] = @end_date
+                              ,[done] = @done
+                              ,[created_at] = @created_at
+                         WHERE id = @id";
+
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+
+            command.Parameters.AddWithValue("@title", task.Title);
+            command.Parameters.AddWithValue("@description", task.Description);
+            command.Parameters.AddWithValue("@end_date", task.EndDate);
+            command.Parameters.AddWithValue("@done", task.Done);
+            command.Parameters.AddWithValue("@created_at", task.CreatedAt);
+            command.Parameters.AddWithValue("@id" , task.Id);
+
+            try
+            {
+                clsSettings.connection.Open();
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    updated = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
+
+            return updated;
+        }
+        static public bool UpdateTaskStatus(int id, bool status) {
+            int rowsAffected = 0;
+            string query = @"UPDATE tasks
+                            set done = @status
+                            where id = @id";
+            
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+            command.Parameters.AddWithValue("@status", status);
+            command.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                clsSettings.connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex) { 
+                Console.WriteLine(ex.Message);
+            } finally {
+                clsSettings.connection.Close(); 
+            }
+                
+            return (rowsAffected > 0);
+        }
+
+        //Querys Section
         static public DataTable GetAllTasks()
         {
-            DataTable tasks = new DataTable();
-            tasks.Columns.Add("id", typeof(int));
-            tasks.Columns.Add("Done", typeof(bool));
-            tasks.Columns.Add("Title", typeof(string));
-            tasks.Columns.Add("Description", typeof(string));
-            tasks.Columns.Add("End Date", typeof(DateTime));
-            tasks.Columns.Add("Created At", typeof(DateTime));
-
-
+            DataTable tasks = GenerateTasksDataTable();
+    
             string query = "select * from tasks;";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
             try
@@ -131,108 +226,44 @@ namespace Data_Access_Tier
             }
             return task;
         }
+        static public DataTable GetTasksByDate(DateTime date) { 
+            DataTable tasks = GenerateTasksDataTable();
 
-        static public bool UpdateTask(clsTask task) {
-            if (task == null)
-            {
-                return false;
-            }
-
-            bool updated = false;
-
-
-            string query = @"UPDATE tasks
-                           SET [title] = @title
-                              ,[description] =  @description
-                              ,[end_date] = @end_date
-                              ,[done] = @done
-                              ,[created_at] = @created_at
-                         WHERE id = @id";
-
+            string query = "Select * from tasks where created_at = @end_date";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
-
-            command.Parameters.AddWithValue("@title", task.Title);
-            command.Parameters.AddWithValue("@description", task.Description);
-            command.Parameters.AddWithValue("@end_date", task.EndDate);
-            command.Parameters.AddWithValue("@done", task.Done);
-            command.Parameters.AddWithValue("@created_at", task.CreatedAt);
-            command.Parameters.AddWithValue("@id" , task.Id);
-
+            command.Parameters.AddWithValue ("@end_date", date.Date);
             try
             {
                 clsSettings.connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    updated = true;
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) {
+                    tasks.Rows.Add(reader["id"], reader["done"], reader["title"], reader["description"], reader["end_date"], reader["created_at"]);
                 }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-            return updated;
-        }
-
-        static public bool DeleteTasks(string ids)
-        {
-            int rowsAffected = 0;
-            if(ids == null || ids == "")
-            {
-                return false;
-            }
-
-            string query = $"DELETE FROM tasks where id in ({ids})";
-            SqlCommand command = new SqlCommand(query, clsSettings.connection);
-
-            try
-            {
-                clsSettings.connection.Open();
-
-                rowsAffected = command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-            return rowsAffected > 0;
-        }
-
-        static public bool UpdateTaskStatus(int id, bool status) {
-            int rowsAffected = 0;
-            string query = @"UPDATE tasks
-                            set done = @status
-                            where id = @id";
-            
-            SqlCommand command = new SqlCommand(query, clsSettings.connection);
-            command.Parameters.AddWithValue("@status", status);
-            command.Parameters.AddWithValue("@id", id);
-
-            try
-            {
-                clsSettings.connection.Open();
-                rowsAffected = command.ExecuteNonQuery();
             }
             catch (Exception ex) { 
-                Console.WriteLine(ex.Message);
-            } finally {
+                Console.WriteLine (ex.Message);
+            }
+            finally {
                 clsSettings.connection.Close(); 
             }
-                
-            return (rowsAffected > 0);
+
+            return tasks;
         }
+
+
+
+        //Helper functions section
+        static public DataTable GenerateTasksDataTable()
+        {
+            DataTable tasks = new DataTable();
+            tasks.Columns.Add("id", typeof(int));
+            tasks.Columns.Add("Done", typeof(bool));
+            tasks.Columns.Add("Title", typeof(string));
+            tasks.Columns.Add("Description", typeof(string));
+            tasks.Columns.Add("End Date", typeof(DateTime));
+            tasks.Columns.Add("Created At", typeof(DateTime));
+            return tasks;
+        }
+
     }
 }

@@ -53,5 +53,9 @@ namespace Business_Tier
         public static bool UpdateTaskStatus(int id, bool status){
             return clsTask.UpdateTaskStatus(id,status);
         }
+
+        public static DataTable GetTasksByDate(DateTime date) {
+            return clsTask.GetTasksByDate(date);
+        }
     }
 }

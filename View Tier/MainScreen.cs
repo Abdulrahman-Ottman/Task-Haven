@@ -146,5 +146,17 @@ namespace View_Tier
                 TaskList.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
+
+        private void DateSelector_ValueChanged(object sender, EventArgs e)
+        {
+            tasks = TaskController.GetTasksByDate(DateSelector.Value);
+            LoadTasks();
+        }
+
+        private void btnShowAllTasks_Click(object sender, EventArgs e)
+        {
+            tasks = TaskController.GetAllTasks();
+            LoadTasks();
+        }
     }
 }
