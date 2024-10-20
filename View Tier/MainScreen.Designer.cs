@@ -71,6 +71,8 @@
             this.TaskList.Size = new System.Drawing.Size(504, 319);
             this.TaskList.TabIndex = 3;
             this.TaskList.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.TaskList_CellBeginEdit);
+            this.TaskList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TaskList_CellValueChanged);
+            this.TaskList.CurrentCellDirtyStateChanged += new System.EventHandler(this.TaskList_CurrentCellDirtyStateChanged);
             this.TaskList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TaskList_MouseDown);
             // 
             // TasksMenuStrip
@@ -79,19 +81,19 @@
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.TasksMenuStrip.Name = "TasksMenuStrip";
-            this.TasksMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.TasksMenuStrip.Size = new System.Drawing.Size(108, 48);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 

@@ -49,5 +49,9 @@ namespace Business_Tier
            
             return clsTask.DeleteTasks(id.ToString());
         }
+
+        public static bool UpdateTaskStatus(int id, bool status){
+            return clsTask.UpdateTaskStatus(id,status);
+        }
     }
 }

@@ -211,5 +211,28 @@ namespace Data_Access_Tier
             return rowsAffected > 0;
         }
 
+        static public bool UpdateTaskStatus(int id, bool status) {
+            int rowsAffected = 0;
+            string query = @"UPDATE tasks
+                            set done = @status
+                            where id = @id";
+            
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+            command.Parameters.AddWithValue("@status", status);
+            command.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                clsSettings.connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex) { 
+                Console.WriteLine(ex.Message);
+            } finally {
+                clsSettings.connection.Close(); 
+            }
+                
+            return (rowsAffected > 0);
+        }
     }
 }
