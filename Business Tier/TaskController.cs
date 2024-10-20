@@ -44,5 +44,10 @@ namespace Business_Tier
             task.CreatedAt = created_at;
             return clsTask.UpdateTask(task);
         }
+
+        public static bool DeleteTasks(int id) {
+           
+            return clsTask.DeleteTasks(id.ToString());
+        }
     }
 }

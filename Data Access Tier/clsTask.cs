@@ -182,5 +182,34 @@ namespace Data_Access_Tier
             return updated;
         }
 
+        static public bool DeleteTasks(string ids)
+        {
+            int rowsAffected = 0;
+            if(ids == null || ids == "")
+            {
+                return false;
+            }
+
+            string query = $"DELETE FROM tasks where id in ({ids})";
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+
+            try
+            {
+                clsSettings.connection.Open();
+
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
     }
 }

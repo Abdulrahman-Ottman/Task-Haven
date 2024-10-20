@@ -89,5 +89,19 @@ namespace View_Tier
                 }
             }
         }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+            if (TaskController.DeleteTasks(id))
+            {
+                MessageBox.Show("Task Deleted Succesfully");
+                LoadTasks();
+            }
+            else
+            {
+                MessageBox.Show("Error: Faild To Delete Task");
+            }
+        }
     }
 }
