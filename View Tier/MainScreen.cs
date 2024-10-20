@@ -14,6 +14,8 @@ namespace View_Tier
 {
     public partial class MainScreen : Form
     {
+        DataTable tasks = TaskController.GetAllTasks();
+
         public MainScreen()
         {
             InitializeComponent();
@@ -22,7 +24,6 @@ namespace View_Tier
          private void LoadTasks()
         {
 
-            DataTable tasks = TaskController.GetAllTasks();
 
             // Set up the DataGridView and bind the DataTable
             TaskList.DataSource = tasks;
@@ -60,6 +61,7 @@ namespace View_Tier
                 // Cancel editing for all columns except "Done"
                 e.Cancel = true;
             }
+
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -101,6 +103,47 @@ namespace View_Tier
             else
             {
                 MessageBox.Show("Error: Faild To Delete Task");
+            }
+
+        }
+
+        private void TaskList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+
+            if (e.ColumnIndex == TaskList.Columns["Done"].Index)
+            {
+                bool isDone = (bool)TaskList.Rows[e.RowIndex].Cells["Done"].Value;
+
+         
+                    if (TaskController.UpdateTaskStatus(id, (bool)tasks.Rows[id - 1][1]))
+                    {
+                        if (isDone)
+                        {
+                            MessageBox.Show("Task completed!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Task unChecked!");
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error : Task status hasn't updated");
+                    }
+                
+                
+
+
+            }
+        }
+
+        private void TaskList_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (TaskList.IsCurrentCellDirty && TaskList.CurrentCell is DataGridViewCheckBoxCell)
+            {
+                TaskList.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
     }
