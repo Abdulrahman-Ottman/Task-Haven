@@ -24,7 +24,15 @@ namespace Business_Tier
 
         public static Dictionary<string , string> GetTaskDataById(int id)
         {
-            return clsTask.GetTaskDataById(id);
+            Dictionary<string, string> taskData = new Dictionary<string, string>();
+            clsTask task = clsTask.FindTaskByID(id);
+            taskData.Add("id", task.Id.ToString());
+            taskData.Add("title", task.Title);
+            taskData.Add("description", task.Description);
+            taskData.Add("done", task.Done.ToString());
+            taskData.Add("end_date", task.EndDate.ToString());
+            taskData.Add("created_at", task.CreatedAt.ToString());
+            return taskData;
         }
 
         public static bool UpdateTask(int id , string title, string description, DateTime end_date, DateTime created_at)

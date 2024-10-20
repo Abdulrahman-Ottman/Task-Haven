@@ -100,37 +100,6 @@ namespace Data_Access_Tier
 
             return tasks;
         }
-
-        static public Dictionary<string, string> GetTaskDataById(int id) {
-            Dictionary<string , string> taskData = new Dictionary<string , string>();
-            string query = "select * from tasks where id = @id";
-            SqlCommand command = new SqlCommand(query , clsSettings.connection);
-            command.Parameters.AddWithValue("@id" , id);
-
-            try
-            {
-                clsSettings.connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    taskData.Add("id" , reader["id"].ToString());
-                    taskData.Add("title" , reader["title"].ToString());
-                    taskData.Add("description" , reader["description"].ToString());
-                    taskData.Add("done" , reader["done"].ToString());
-                    taskData.Add("end_date" , reader["end_date"].ToString());
-                    taskData.Add("created_at" , reader["created_at"].ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally {
-                clsSettings.connection.Close();
-            }
-            return taskData;
-        }
-
         static public clsTask FindTaskByID(int id) {
             clsTask task = new clsTask();
 
