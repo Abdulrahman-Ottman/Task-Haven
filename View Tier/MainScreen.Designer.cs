@@ -29,16 +29,25 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnAddTask = new System.Windows.Forms.Button();
             this.TaskList = new System.Windows.Forms.DataGridView();
             this.TasksMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DateSelector = new System.Windows.Forms.DateTimePicker();
-            this.btnShowAllTasks = new System.Windows.Forms.Button();
+            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.gbFilters = new System.Windows.Forms.GroupBox();
+            this.rbCompletedTasks = new System.Windows.Forms.RadioButton();
+            this.rbInCompletedTasks = new System.Windows.Forms.RadioButton();
+            this.rbTdIncompletedTasks = new System.Windows.Forms.RadioButton();
+            this.rbTdCompletedTasks = new System.Windows.Forms.RadioButton();
+            this.rbTdAllTasks = new System.Windows.Forms.RadioButton();
+            this.rbAllTasks = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.TaskList)).BeginInit();
             this.TasksMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.gbFilters.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddTask
@@ -61,14 +70,14 @@
             this.TaskList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.TaskList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TaskList.ContextMenuStrip = this.TasksMenuStrip;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.TaskList.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.TaskList.DefaultCellStyle = dataGridViewCellStyle2;
             this.TaskList.Location = new System.Drawing.Point(12, 12);
             this.TaskList.Name = "TaskList";
             this.TaskList.Size = new System.Drawing.Size(534, 319);
@@ -102,23 +111,110 @@
             // 
             // DateSelector
             // 
-            this.DateSelector.Location = new System.Drawing.Point(562, 130);
+            this.DateSelector.Location = new System.Drawing.Point(562, 72);
             this.DateSelector.Name = "DateSelector";
             this.DateSelector.Size = new System.Drawing.Size(200, 20);
             this.DateSelector.TabIndex = 4;
             this.DateSelector.ValueChanged += new System.EventHandler(this.DateSelector_ValueChanged);
             // 
-            // btnShowAllTasks
+            // fileSystemWatcher1
             // 
-            this.btnShowAllTasks.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnShowAllTasks.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.btnShowAllTasks.Location = new System.Drawing.Point(562, 69);
-            this.btnShowAllTasks.Name = "btnShowAllTasks";
-            this.btnShowAllTasks.Size = new System.Drawing.Size(200, 40);
-            this.btnShowAllTasks.TabIndex = 5;
-            this.btnShowAllTasks.Text = "Show All Tasks";
-            this.btnShowAllTasks.UseVisualStyleBackColor = false;
-            this.btnShowAllTasks.Click += new System.EventHandler(this.btnShowAllTasks_Click);
+            this.fileSystemWatcher1.EnableRaisingEvents = true;
+            this.fileSystemWatcher1.SynchronizingObject = this;
+            // 
+            // gbFilters
+            // 
+            this.gbFilters.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.gbFilters.Controls.Add(this.rbAllTasks);
+            this.gbFilters.Controls.Add(this.rbTdCompletedTasks);
+            this.gbFilters.Controls.Add(this.rbTdIncompletedTasks);
+            this.gbFilters.Controls.Add(this.rbCompletedTasks);
+            this.gbFilters.Controls.Add(this.rbInCompletedTasks);
+            this.gbFilters.Controls.Add(this.rbTdAllTasks);
+            this.gbFilters.Location = new System.Drawing.Point(562, 124);
+            this.gbFilters.Name = "gbFilters";
+            this.gbFilters.Size = new System.Drawing.Size(200, 207);
+            this.gbFilters.TabIndex = 6;
+            this.gbFilters.TabStop = false;
+            this.gbFilters.Text = "Filters";
+            // 
+            // rbCompletedTasks
+            // 
+            this.rbCompletedTasks.AutoSize = true;
+            this.rbCompletedTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbCompletedTasks.Location = new System.Drawing.Point(11, 173);
+            this.rbCompletedTasks.Name = "rbCompletedTasks";
+            this.rbCompletedTasks.Size = new System.Drawing.Size(120, 17);
+            this.rbCompletedTasks.TabIndex = 2;
+            this.rbCompletedTasks.TabStop = true;
+            this.rbCompletedTasks.Text = "All Completed Tasks";
+            this.rbCompletedTasks.UseVisualStyleBackColor = true;
+            this.rbCompletedTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
+            // 
+            // rbInCompletedTasks
+            // 
+            this.rbInCompletedTasks.AutoSize = true;
+            this.rbInCompletedTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbInCompletedTasks.Location = new System.Drawing.Point(11, 144);
+            this.rbInCompletedTasks.Name = "rbInCompletedTasks";
+            this.rbInCompletedTasks.Size = new System.Drawing.Size(128, 17);
+            this.rbInCompletedTasks.TabIndex = 1;
+            this.rbInCompletedTasks.TabStop = true;
+            this.rbInCompletedTasks.Text = "All Incompleted Tasks";
+            this.rbInCompletedTasks.UseVisualStyleBackColor = true;
+            this.rbInCompletedTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
+            // 
+            // rbTdIncompletedTasks
+            // 
+            this.rbTdIncompletedTasks.AutoSize = true;
+            this.rbTdIncompletedTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbTdIncompletedTasks.Location = new System.Drawing.Point(11, 57);
+            this.rbTdIncompletedTasks.Name = "rbTdIncompletedTasks";
+            this.rbTdIncompletedTasks.Size = new System.Drawing.Size(147, 17);
+            this.rbTdIncompletedTasks.TabIndex = 3;
+            this.rbTdIncompletedTasks.TabStop = true;
+            this.rbTdIncompletedTasks.Text = "Today Incompleted Tasks";
+            this.rbTdIncompletedTasks.UseVisualStyleBackColor = true;
+            this.rbTdIncompletedTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
+            // 
+            // rbTdCompletedTasks
+            // 
+            this.rbTdCompletedTasks.AutoSize = true;
+            this.rbTdCompletedTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbTdCompletedTasks.Location = new System.Drawing.Point(11, 86);
+            this.rbTdCompletedTasks.Name = "rbTdCompletedTasks";
+            this.rbTdCompletedTasks.Size = new System.Drawing.Size(139, 17);
+            this.rbTdCompletedTasks.TabIndex = 4;
+            this.rbTdCompletedTasks.TabStop = true;
+            this.rbTdCompletedTasks.Text = "Today Completed Tasks";
+            this.rbTdCompletedTasks.UseVisualStyleBackColor = true;
+            this.rbTdCompletedTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
+            // 
+            // rbTdAllTasks
+            // 
+            this.rbTdAllTasks.AutoSize = true;
+            this.rbTdAllTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbTdAllTasks.Location = new System.Drawing.Point(11, 28);
+            this.rbTdAllTasks.Name = "rbTdAllTasks";
+            this.rbTdAllTasks.Size = new System.Drawing.Size(99, 17);
+            this.rbTdAllTasks.TabIndex = 0;
+            this.rbTdAllTasks.TabStop = true;
+            this.rbTdAllTasks.Text = "Today All Tasks";
+            this.rbTdAllTasks.UseVisualStyleBackColor = true;
+            this.rbTdAllTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
+            // 
+            // rbAllTasks
+            // 
+            this.rbAllTasks.AutoSize = true;
+            this.rbAllTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.rbAllTasks.Location = new System.Drawing.Point(11, 115);
+            this.rbAllTasks.Name = "rbAllTasks";
+            this.rbAllTasks.Size = new System.Drawing.Size(66, 17);
+            this.rbAllTasks.TabIndex = 5;
+            this.rbAllTasks.TabStop = true;
+            this.rbAllTasks.Text = "All Tasks";
+            this.rbAllTasks.UseVisualStyleBackColor = true;
+            this.rbAllTasks.CheckedChanged += new System.EventHandler(this.filters_StatusChanged);
             // 
             // MainScreen
             // 
@@ -126,8 +222,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(800, 387);
-            this.Controls.Add(this.btnShowAllTasks);
             this.Controls.Add(this.DateSelector);
+            this.Controls.Add(this.gbFilters);
             this.Controls.Add(this.TaskList);
             this.Controls.Add(this.btnAddTask);
             this.ForeColor = System.Drawing.SystemColors.ButtonFace;
@@ -137,6 +233,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TaskList)).EndInit();
             this.TasksMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.gbFilters.ResumeLayout(false);
+            this.gbFilters.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -148,7 +247,14 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.DateTimePicker DateSelector;
-        private System.Windows.Forms.Button btnShowAllTasks;
+        private System.IO.FileSystemWatcher fileSystemWatcher1;
+        private System.Windows.Forms.GroupBox gbFilters;
+        private System.Windows.Forms.RadioButton rbCompletedTasks;
+        private System.Windows.Forms.RadioButton rbInCompletedTasks;
+        private System.Windows.Forms.RadioButton rbTdCompletedTasks;
+        private System.Windows.Forms.RadioButton rbTdIncompletedTasks;
+        private System.Windows.Forms.RadioButton rbTdAllTasks;
+        private System.Windows.Forms.RadioButton rbAllTasks;
     }
 }
 

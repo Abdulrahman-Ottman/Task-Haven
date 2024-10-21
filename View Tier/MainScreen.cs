@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,16 +17,18 @@ namespace View_Tier
     public partial class MainScreen : Form
     {
         DataTable tasks = TaskController.GetAllTasks();
+        static DataColumn[] keyColumns = new DataColumn[1];
 
         public MainScreen()
         {
             InitializeComponent();
         }
 
-         private void LoadTasks()
+         private void LoadDataFromTasksDataTable()
         {
 
-
+            keyColumns[0] = tasks.Columns["id"];
+            tasks.PrimaryKey = keyColumns;
             // Set up the DataGridView and bind the DataTable
             TaskList.DataSource = tasks;
 
@@ -41,17 +45,49 @@ namespace View_Tier
             TaskList.Columns["End Date"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Created At"].DefaultCellStyle.ForeColor = Color.Black;
         }
+         private void UpdateDataInTasksDataTable()
+        {
+            RadioButton checkedFilter = new RadioButton();
+            if (rbAllTasks.Checked)
+            {
+                checkedFilter = rbAllTasks;
+            }
+            else if (rbCompletedTasks.Checked)
+            {
+                checkedFilter = rbCompletedTasks;
+            }
+            else if (rbInCompletedTasks.Checked)
+            {
+                checkedFilter = rbInCompletedTasks;
+            }
+            else if (rbTdAllTasks.Checked)
+            {
+                checkedFilter = rbTdAllTasks;
+            }
+            else if (rbTdCompletedTasks.Checked)
+            {
+                checkedFilter = rbTdCompletedTasks;
+            }
+            else if (rbTdIncompletedTasks.Checked)
+            {
+                checkedFilter = rbTdIncompletedTasks;
+            }
+
+            filters_StatusChanged(checkedFilter, new EventArgs());
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            LoadTasks();
+            rbTdAllTasks.Checked = true;
+            LoadDataFromTasksDataTable();
 
         }
         private void btnAddTask_Click(object sender, EventArgs e)
         {
             AddEditTask addTask = new AddEditTask();
             addTask.ShowDialog();
-            LoadTasks();
+
+            UpdateDataInTasksDataTable();
         }
 
         private void TaskList_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -69,7 +105,7 @@ namespace View_Tier
             int id = (int)(TaskList.CurrentRow.Cells[0].Value);
             AddEditTask EditScreen = new AddEditTask(id);
             EditScreen.ShowDialog();
-            LoadTasks();
+            UpdateDataInTasksDataTable();
         }
 
         private void TaskList_MouseDown(object sender, MouseEventArgs e)
@@ -98,7 +134,8 @@ namespace View_Tier
             if (TaskController.DeleteTasks(id))
             {
                 MessageBox.Show("Task Deleted Succesfully");
-                LoadTasks();
+                UpdateDataInTasksDataTable();
+                LoadDataFromTasksDataTable();
             }
             else
             {
@@ -116,7 +153,7 @@ namespace View_Tier
                 bool isDone = (bool)TaskList.Rows[e.RowIndex].Cells["Done"].Value;
 
          
-                    if (TaskController.UpdateTaskStatus(id, (bool)tasks.Rows[id - 1][1]))
+                    if (TaskController.UpdateTaskStatus(id, isDone))
                     {
                         if (isDone)
                         {
@@ -127,6 +164,7 @@ namespace View_Tier
                             MessageBox.Show("Task unChecked!");
                         }
 
+                        UpdateDataInTasksDataTable();
                     }
                     else
                     {
@@ -150,13 +188,39 @@ namespace View_Tier
         private void DateSelector_ValueChanged(object sender, EventArgs e)
         {
             tasks = TaskController.GetTasksByDate(DateSelector.Value);
-            LoadTasks();
+            LoadDataFromTasksDataTable();
         }
 
-        private void btnShowAllTasks_Click(object sender, EventArgs e)
-        {
-            tasks = TaskController.GetAllTasks();
-            LoadTasks();
+
+        private void filters_StatusChanged(object sender , EventArgs e) {
+
+            RadioButton selectedRadioButton = sender as RadioButton;
+
+            if (selectedRadioButton != null && selectedRadioButton.Checked)
+            {
+                switch (selectedRadioButton.Name)
+                {
+                    case "rbAllTasks":
+                        tasks = TaskController.GetAllTasks();
+                        break;
+                    case "rbInCompletedTasks":
+                        tasks = TaskController.GetTasksByStatus(false);
+                        break;
+                    case "rbCompletedTasks":
+                        tasks = TaskController.GetTasksByStatus(true);
+                        break;
+                    case "rbTdAllTasks":
+                        tasks = TaskController.GetTasksByDate(DateSelector.Value);
+                        break;
+                    case "rbTdIncompletedTasks":
+                        tasks = TaskController.GetTasksByStatusAndDate(false , DateSelector.Value);
+                        break;
+                    case "rbTdCompletedTasks":
+                        tasks = TaskController.GetTasksByStatusAndDate(true, DateSelector.Value);
+                        break;
+                }
+                LoadDataFromTasksDataTable();
+            }
         }
     }
 }

@@ -29,9 +29,6 @@ namespace Data_Access_Tier
                 return false;
             }
 
-            bool added = false;
-
-
             string query = @"INSERT INTO tasks (title, description, end_date, done, created_at)
                              VALUES (@title, @description, @end_date, @done, @created_at)";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
@@ -42,65 +39,21 @@ namespace Data_Access_Tier
             command.Parameters.AddWithValue("@done", task.Done);
             command.Parameters.AddWithValue("@created_at", task.CreatedAt);
 
-            try
-            {
-                clsSettings.connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    added = true;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-            return added;
+            return TaskNonQueryCommandExcuter(command);
 
         }
         static public bool DeleteTasks(string ids)
         {
-            int rowsAffected = 0;
-            if(ids == null || ids == "")
-            {
-                return false;
-            }
+            if(ids == null || ids == "") return false;
 
             string query = $"DELETE FROM tasks where id in ({ids})";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
 
-            try
-            {
-                clsSettings.connection.Open();
-
-                rowsAffected = command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-            return rowsAffected > 0;
+            return TaskNonQueryCommandExcuter(command);
         }
         static public bool UpdateTask(clsTask task) {
-            if (task == null)
-            {
-                return false;
-            }
-
-            bool updated = false;
+            if (task == null) return false;
+            
 
 
             string query = @"UPDATE tasks
@@ -120,31 +73,10 @@ namespace Data_Access_Tier
             command.Parameters.AddWithValue("@created_at", task.CreatedAt);
             command.Parameters.AddWithValue("@id" , task.Id);
 
-            try
-            {
-                clsSettings.connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    updated = true;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-            return updated;
+            return TaskNonQueryCommandExcuter(command);
         }
         static public bool UpdateTaskStatus(int id, bool status) {
-            int rowsAffected = 0;
+
             string query = @"UPDATE tasks
                             set done = @status
                             where id = @id";
@@ -152,48 +84,17 @@ namespace Data_Access_Tier
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
             command.Parameters.AddWithValue("@status", status);
             command.Parameters.AddWithValue("@id", id);
-
-            try
-            {
-                clsSettings.connection.Open();
-                rowsAffected = command.ExecuteNonQuery();
-            }
-            catch (Exception ex) { 
-                Console.WriteLine(ex.Message);
-            } finally {
-                clsSettings.connection.Close(); 
-            }
-                
-            return (rowsAffected > 0);
+            
+            return TaskNonQueryCommandExcuter(command);
         }
 
         //Querys Section
         static public DataTable GetAllTasks()
         {
-            DataTable tasks = GenerateTasksDataTable();
-    
             string query = "select * from tasks;";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
-            try
-            {
-                clsSettings.connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read()) {
-                    tasks.Rows.Add(reader["id"] ,reader["done"] , reader["title"] , reader["description"] , reader["end_date"] , reader["created_at"]);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                clsSettings.connection.Close();
-            }
-
-
-            return tasks;
+           
+            return TasksQueryCommandExucuter(command);
         }
         static public clsTask FindTaskByID(int id) {
             clsTask task = new clsTask();
@@ -227,29 +128,29 @@ namespace Data_Access_Tier
             return task;
         }
         static public DataTable GetTasksByDate(DateTime date) { 
-            DataTable tasks = GenerateTasksDataTable();
-
             string query = "Select * from tasks where created_at = @end_date";
             SqlCommand command = new SqlCommand(query, clsSettings.connection);
             command.Parameters.AddWithValue ("@end_date", date.Date);
-            try
-            {
-                clsSettings.connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read()) {
-                    tasks.Rows.Add(reader["id"], reader["done"], reader["title"], reader["description"], reader["end_date"], reader["created_at"]);
-                }
-            }
-            catch (Exception ex) { 
-                Console.WriteLine (ex.Message);
-            }
-            finally {
-                clsSettings.connection.Close(); 
-            }
 
-            return tasks;
+            return TasksQueryCommandExucuter(command);
+        }
+        static public DataTable GetTasksByStatus(bool status)
+        {
+            string query = "Select * from tasks where done = @status";
+            SqlCommand command = new SqlCommand(query, clsSettings.connection);
+            command.Parameters.AddWithValue("@status", status);
+           
+            return TasksQueryCommandExucuter(command);
         }
 
+        static public DataTable GetTasksByStatusAndDate(bool status, DateTime date) {
+            string query = @"Select * from tasks
+                             where done = @status and created_at = @date";
+            SqlCommand command = new SqlCommand (query, clsSettings.connection);
+            command.Parameters.AddWithValue("@status" , status);
+            command.Parameters.AddWithValue("@date" , date.Date);
+            return TasksQueryCommandExucuter(command);
+        }
 
 
         //Helper functions section
@@ -263,6 +164,55 @@ namespace Data_Access_Tier
             tasks.Columns.Add("End Date", typeof(DateTime));
             tasks.Columns.Add("Created At", typeof(DateTime));
             return tasks;
+        }
+        static public DataTable TasksQueryCommandExucuter(SqlCommand command)
+        {
+            DataTable tasks = GenerateTasksDataTable();
+
+            try
+            {
+                clsSettings.connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    tasks.Rows.Add(reader["id"], reader["done"], reader["title"], reader["description"], reader["end_date"], reader["created_at"]);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
+
+
+            return tasks;
+        }
+        static public bool TaskNonQueryCommandExcuter(SqlCommand command)
+        {
+            int rowsAffected = 0;
+            try
+            {
+                clsSettings.connection.Open();
+
+                 rowsAffected = command.ExecuteNonQuery();
+
+    
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                clsSettings.connection.Close();
+            }
+
+            return rowsAffected>0;
         }
 
     }
