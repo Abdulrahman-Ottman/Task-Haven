@@ -102,10 +102,16 @@ namespace View_Tier
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
-            AddEditTask EditScreen = new AddEditTask(id);
-            EditScreen.ShowDialog();
-            UpdateDataInTasksDataTable();
+            try
+            {
+                int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+                AddEditTask EditScreen = new AddEditTask(id);
+                EditScreen.ShowDialog();
+                UpdateDataInTasksDataTable();
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Error : No Task Selected");   
+            }
         }
 
         private void TaskList_MouseDown(object sender, MouseEventArgs e)
@@ -130,18 +136,24 @@ namespace View_Tier
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
-            if (TaskController.DeleteTasks(id))
+            try
             {
-                MessageBox.Show("Task Deleted Succesfully");
-                UpdateDataInTasksDataTable();
-                LoadDataFromTasksDataTable();
-            }
-            else
+                int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+                if (TaskController.DeleteTasks(id))
+                {
+                    MessageBox.Show("Task Deleted Succesfully");
+                    UpdateDataInTasksDataTable();
+                    LoadDataFromTasksDataTable();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Faild To Delete Task");
+                }
+            }catch(Exception ex)
             {
-                MessageBox.Show("Error: Faild To Delete Task");
-            }
+                MessageBox.Show("Error: No Task selected");
 
+            }
         }
 
         private void TaskList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
