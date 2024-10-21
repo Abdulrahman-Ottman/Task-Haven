@@ -24,7 +24,7 @@ namespace View_Tier
             InitializeComponent();
         }
 
-         private void LoadDataFromTasksDataTable()
+        private void LoadDataFromTasksDataTable()
         {
 
             keyColumns[0] = tasks.Columns["id"];
@@ -45,7 +45,7 @@ namespace View_Tier
             TaskList.Columns["End Date"].DefaultCellStyle.ForeColor = Color.Black;
             TaskList.Columns["Created At"].DefaultCellStyle.ForeColor = Color.Black;
         }
-         private void UpdateDataInTasksDataTable()
+        private void UpdateDataInTasksDataTable()
         {
             RadioButton checkedFilter = new RadioButton();
             if (rbAllTasks.Checked)
@@ -102,10 +102,17 @@ namespace View_Tier
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
-            AddEditTask EditScreen = new AddEditTask(id);
-            EditScreen.ShowDialog();
-            UpdateDataInTasksDataTable();
+            try
+            {
+                int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+                AddEditTask EditScreen = new AddEditTask(id);
+                EditScreen.ShowDialog();
+                UpdateDataInTasksDataTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : No Task Selected");
+            }
         }
 
         private void TaskList_MouseDown(object sender, MouseEventArgs e)
@@ -130,18 +137,25 @@ namespace View_Tier
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int id = (int)(TaskList.CurrentRow.Cells[0].Value);
-            if (TaskController.DeleteTasks(id))
+            try
             {
-                MessageBox.Show("Task Deleted Succesfully");
-                UpdateDataInTasksDataTable();
-                LoadDataFromTasksDataTable();
+                int id = (int)(TaskList.CurrentRow.Cells[0].Value);
+                if (TaskController.DeleteTasks(id))
+                {
+                    MessageBox.Show("Task Deleted Succesfully");
+                    UpdateDataInTasksDataTable();
+                    LoadDataFromTasksDataTable();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Faild To Delete Task");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error: Faild To Delete Task");
-            }
+                MessageBox.Show("Error: No Task selected");
 
+            }
         }
 
         private void TaskList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -152,26 +166,26 @@ namespace View_Tier
             {
                 bool isDone = (bool)TaskList.Rows[e.RowIndex].Cells["Done"].Value;
 
-         
-                    if (TaskController.UpdateTaskStatus(id, isDone))
-                    {
-                        if (isDone)
-                        {
-                            MessageBox.Show("Task completed!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Task unChecked!");
-                        }
 
-                        UpdateDataInTasksDataTable();
+                if (TaskController.UpdateTaskStatus(id, isDone))
+                {
+                    if (isDone)
+                    {
+                        MessageBox.Show("Task completed!");
                     }
                     else
                     {
-                        MessageBox.Show("Error : Task status hasn't updated");
+                        MessageBox.Show("Task unChecked!");
                     }
-                
-                
+
+                    UpdateDataInTasksDataTable();
+                }
+                else
+                {
+                    MessageBox.Show("Error : Task status hasn't updated");
+                }
+
+
 
 
             }
@@ -192,7 +206,8 @@ namespace View_Tier
         }
 
 
-        private void filters_StatusChanged(object sender , EventArgs e) {
+        private void filters_StatusChanged(object sender, EventArgs e)
+        {
 
             RadioButton selectedRadioButton = sender as RadioButton;
 
@@ -213,7 +228,7 @@ namespace View_Tier
                         tasks = TaskController.GetTasksByDate(DateSelector.Value);
                         break;
                     case "rbTdIncompletedTasks":
-                        tasks = TaskController.GetTasksByStatusAndDate(false , DateSelector.Value);
+                        tasks = TaskController.GetTasksByStatusAndDate(false, DateSelector.Value);
                         break;
                     case "rbTdCompletedTasks":
                         tasks = TaskController.GetTasksByStatusAndDate(true, DateSelector.Value);
