@@ -57,5 +57,15 @@ namespace Business_Tier
         public static DataTable GetTasksByDate(DateTime date) {
             return clsTask.GetTasksByDate(date);
         }
+
+        public static DataTable GetTasksByStatus(bool status)
+        {
+            return clsTask.GetTasksByStatus(status);
+        }
+
+        public static DataTable GetTasksByStatusAndDate(bool status , DateTime date)
+        {
+            return clsTask.GetTasksByStatusAndDate(status , date);
+        }
     }
 }
