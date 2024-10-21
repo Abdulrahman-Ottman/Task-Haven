@@ -36,6 +36,7 @@ namespace View_Tier
 
             // Optional: Customize the columns further if needed
             TaskList.Columns[0].Width = 40;  // Set checkbox column width
+            TaskList.Columns[1].Width = 40;  // Set checkbox column width
             TaskList.Columns[3].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format End Date
             TaskList.Columns[4].DefaultCellStyle.Format = "dd/MM/yyyy"; // Format Created At        }
 
@@ -79,6 +80,12 @@ namespace View_Tier
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             rbTdAllTasks.Checked = true;
+            TaskList.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            TaskList.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            TaskList.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            TaskList.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 9, FontStyle.Bold);
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(btnAddTask, "Click to add a new task");
             LoadDataFromTasksDataTable();
 
         }
